@@ -1,0 +1,942 @@
+{
+  "name": "AutoInbox",
+  "nodes": [
+    {
+      "parameters": {
+        "inputText": "=subject: {{ $json.Subject }}\nemail body:{{ $json.snippet }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Application",
+              "description": "this is any email confirming a job application was submitted, received, or reviewed, usually mentioning CV, resume, or application."
+            },
+            {
+              "category": "Interview",
+              "description": "this is any email inviting you to an interview, scheduling a meeting, or discussing availability for a job-related conversation."
+            },
+            {
+              "category": "Recruiter",
+              "description": "Emails from recruiters reaching out about job opportunities, networking, or asking if you’re open to new roles."
+            },
+            {
+              "category": "Test/Assignment",
+              "description": "Emails sending a job-related test, assignment, or coding challenge as part of the application or interview process."
+            },
+            {
+              "category": "Newsletter",
+              "description": "Emails from job boards or platforms sharing job listings, alerts, or career advice in a newsletter format."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -1088,
+        560
+      ],
+      "id": "6b4a679b-67df-42c4-8739-c8b27ea0b82f",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1312,
+        560
+      ],
+      "id": "f4bcc69c-4a1c-493a-9359-ff5540ef586c",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "atDt0g6PfrgNyYRl",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-lite-preview-06-17",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -992,
+        880
+      ],
+      "id": "439c8dbe-c0cb-4ab4-8ab2-125561b9b2e5",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ofPuuMG7QfxRulpa",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_4732679792610936679"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -688,
+        1152
+      ],
+      "id": "41418ec7-a78b-4dff-b82f-18736b8ef098",
+      "name": "Add label to message",
+      "webhookId": "dacf1b30-9c65-4997-98bc-f1bfce513627",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yZXOfaQZXZlmcV6P",
+          "name": "tamaraghosn01"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_323556967809423873"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -688,
+        176
+      ],
+      "id": "e3c19ea8-14b4-41f9-986f-c93b1e23d374",
+      "name": "Add label to message1",
+      "webhookId": "820545df-5536-48d1-a103-2dd4f6d678e9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "atDt0g6PfrgNyYRl",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_2769041913752198796"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -688,
+        368
+      ],
+      "id": "fb0d3e97-e709-4e40-8251-02f7169011c8",
+      "name": "Add label to message2",
+      "webhookId": "5f7d285e-f8f6-4a80-97c5-d0d7b6990f87",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "atDt0g6PfrgNyYRl",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -464,
+        1152
+      ],
+      "id": "dbe2e311-ece9-47dc-afd4-a0a0009aac15",
+      "name": "Get a message",
+      "webhookId": "98d7ddf7-8814-415b-9476-3ee3ad07734d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yZXOfaQZXZlmcV6P",
+          "name": "tamaraghosn01"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"summary\": \"This newsletter announces the launch of Veo 3 and Veo 3 Fast in the Gemini API, highlighting their advanced video generation features.\",\n  \"career_tips_or_trends\": [\n    \"Veo 3 generates 8s videos with native audio from text or images.\",\n    \"Supports multilingual dialogue, sound effects, and ambient noise.\",\n    \"Available via Gemini API with SDKs in Python, JS, Go.\",\n    \"Enables diverse visual styles for creative outputs.\"\n  ],\n  \"source\": \"Google AI Studio\"\n}\n\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -48,
+        1376
+      ],
+      "id": "b6c651f3-9078-4e37-9832-7758fcdcea23",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a helpful assistant summarizing newsletter emails.\n\nGiven the raw newsletter content, extract and return the following in concise bullet-point form using this JSON structure:\n\n{\n  \"summary\": \"2–3 sentence summary of the newsletter's main announcement or theme.\",\n  \"job_highlights\": [\"List of job listings in 'Title – Company (Location)' format, if any. Omit the field if none.\"],\n  \"career_tips_or_trends\": [\"Key takeaways, product updates, or industry trends (max 3–5, short and clear).\"],\n  \"source\": \"Name of the newsletter or sender (if present).\"\n}\n\nAvoid stating 'No job listings' — just omit the field.\n\nEmail Content:\n\"\"\"\n{{ $json.text }}\n\n\"\"\"\n\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -208,
+        1152
+      ],
+      "id": "8079a067-6707-4c1d-a219-6e0abc06b3da",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-lite-preview-06-17",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        1376
+      ],
+      "id": "acfd35bf-55b9-4611-9f59-5a1230e4a360",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ofPuuMG7QfxRulpa",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "24980201-4a08-8038-af9c-feefa2653b5c",
+          "mode": "list",
+          "cachedResultName": "Career Newsletter Insights",
+          "cachedResultUrl": "https://www.notion.so/249802014a088038af9cfeefa2653b5c"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Career Advice / Trends|title",
+              "title": "={{ $json.careerTipsJoined }}"
+            },
+            {
+              "key": "Source|url",
+              "urlValue": "={{ $json.source }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        1152
+      ],
+      "id": "95e61ce5-b63e-4e8d-b6bc-323513df13db",
+      "name": "Create a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "4P8u6ZJnQfOXNTni",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nreturn {\n  careerTipsJoined: \"• \" + $input.first().json.output.career_tips_or_trends.join(\"\\n• \"),\n  source:$input.first().json.output.source ,\n  \n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        1152
+      ],
+      "id": "d3680685-54b8-4d77-ac61-3f5579b55b3d",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "chatId": "-4915992042",
+        "text": "={{ $('AI Agent').item.json.output.summary }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        1152
+      ],
+      "id": "c4eaeb86-8ca6-4986-afdd-9fe85d7ed70e",
+      "name": "Send a text message",
+      "webhookId": "195d1ab1-f966-4ecb-bd85-2f046e65cf2a",
+      "credentials": {
+        "telegramApi": {
+          "id": "51GI53ZsoYFxnAxt",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "labelIds": [
+          "Label_66138274136653986"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -688,
+        560
+      ],
+      "id": "3caf6607-ac07-42fd-866e-7ce8cf4393f9",
+      "name": "Add label to message3",
+      "webhookId": "aa5d28a1-e36d-4fa8-af8a-f1cbcd83e680",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yZXOfaQZXZlmcV6P",
+          "name": "tamaraghosn01"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_628977847128715886"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -688,
+        752
+      ],
+      "id": "a0e2ff92-dd27-4991-923b-238776abac4f",
+      "name": "Add label to message5",
+      "webhookId": "aa5d28a1-e36d-4fa8-af8a-f1cbcd83e680",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "atDt0g6PfrgNyYRl",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -464,
+        752
+      ],
+      "id": "3b098a4e-e754-40af-86f5-c6b2db910845",
+      "name": "Get a message1",
+      "webhookId": "af74e9b4-ec90-427c-806b-cc4f5d993e60",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "atDt0g6PfrgNyYRl",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an assistant that extracts structured information from job-related assignment emails. \nThe email below contains a task or coding challenge or any technical assessment sent by a company. \nExtract the following details:\n\n1. Task Description: What is the candidate asked to do?\n2. Deadline: The due date or timeline mentioned (format: YYYY-MM-DD). If none, write \"No deadline\".\n3. Position: The job title related to this assignment.\n4. Company Name: The company sending the assignment.\n5. Special Instructions: Any additional instructions or important notes.\n6. links to free resources, tutorials, or documentation relevant to the task, need the links from the web in http format\n\nEmail content:\n\n{{ $json.text }}{{ $json.subject }}\n\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -208,
+        656
+      ],
+      "id": "ef22e9bd-5a46-4814-ae4a-e4de439d130c",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        880
+      ],
+      "id": "ee8c46be-4990-4368-b7b7-6014e0c4f45e",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ofPuuMG7QfxRulpa",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"task_description\": [\n    \"Build a responsive login page in JavaScript\",\n    \"Ensure form validation for email and password fields\",\n    \"Implement error messages for invalid input\"\n  ],\n  \"deadline\": \"2025-08-20\",\n  \"position\": \"Front-End Developer\",\n  \"company_name\": \"XYZ Corp\",\n  \"special_instructions\": [\n    \"Submit the code as a GitHub repository link\",\n    \"Include a README with setup instructions\",\n    \"Test the code on multiple browsers\"\n  ],\n  \"resources\": [\n    \"https://developer.mozilla.org/en-US/docs/Web/JavaScript\",\n    \"https://www.w3schools.com/js/\",\n    \"https://www.freecodecamp.org/\"\n  ]\n}\n\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -48,
+        880
+      ],
+      "id": "d20e43e9-caa2-4a78-8485-a473ec3e1903",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "chatId": "-4915992042",
+        "text": "=📝 New Assignment from {{ $json.output.company_name }}\n\nPosition: {{ $json.output.position }}\n\nTask:\n{{ $json.output.task_description.join(\"\\n\") }}\n\nDue Date: {{ $json.output.deadline }}\n\nNotes: \n{{ $json.output.special_instructions.map(item => `• ${item}`).join(\"\\n\\n\") }}\n\nResources:\n{{ $json.output.resources.map(item => `• ${item}`).join(\"\\n\\n\")  }}\n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        752
+      ],
+      "id": "60238d64-0889-4e9f-aa05-1116d482f38a",
+      "name": "Send a text message1",
+      "webhookId": "195d1ab1-f966-4ecb-bd85-2f046e65cf2a",
+      "credentials": {
+        "telegramApi": {
+          "id": "51GI53ZsoYFxnAxt",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "labelIds": [
+          "Label_6697845660337947975"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1312,
+        1488
+      ],
+      "id": "0cd4b171-1420-4b82-aa8d-0e0a4049e604",
+      "name": "Add label to message7",
+      "webhookId": "aa5d28a1-e36d-4fa8-af8a-f1cbcd83e680",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yZXOfaQZXZlmcV6P",
+          "name": "tamaraghosn01"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -464,
+        176
+      ],
+      "id": "b32f8693-0976-4be7-ae10-98265e03d6d4",
+      "name": "Get a message2",
+      "webhookId": "af74e9b4-ec90-427c-806b-cc4f5d993e60",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "atDt0g6PfrgNyYRl",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an email-to-structured-data extractor for job applications.\n\nFrom the provided email text, extract the following fields:\n\n1. Date — The date the email was sent or the application was made, in YYYY-MM-DD format.\n2. Company — The company name.\n3. Position — The job title or role applied for.\n4. Status — Always return \"Applied\".\n\nReturn ONLY a valid JSON object in this exact format:\n\n{\n  \"Date\": \"YYYY-MM-DD\",\n  \"Company\": \"string\",\n  \"Position\": \"string\",\n  \"Status\": \"Applied\"\n}\n\nRules:\n- Output only the JSON object — no explanations, no extra text, no code blocks.\n- If a value is missing, still include the field with \"N/A\".\n- Ensure valid JSON syntax.\n\n\nEmail Content:\n{{ $json.date }}\n{{ $json.text }}   \n{{ $json.from.value[0].address }}\n{{ $json.subject }}\n\n\n\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -208,
+        176
+      ],
+      "id": "bf3b841a-1e6d-447c-9008-297632401476",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        400
+      ],
+      "id": "562daea6-f26a-4bd4-acba-f48f129bbba4",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ofPuuMG7QfxRulpa",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"Date\": \"YYYY-MM-DD\",\n  \"Company\": \"string\",\n  \"Position\": \"string\",\n  \"Status\": \"Applied\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        16,
+        400
+      ],
+      "id": "acef0501-cd17-42de-bb52-cb4198bab3c1",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "25080201-4a08-80b9-92d6-c8d95dd7ada5",
+          "mode": "list",
+          "cachedResultName": "Job Tracker",
+          "cachedResultUrl": "https://www.notion.so/250802014a0880b992d6c8d95dd7ada5"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Company|title",
+              "title": "={{ $json.output.Company }}"
+            },
+            {
+              "key": "Date|date",
+              "includeTime": false,
+              "date": "={{ $json.output.Date }}"
+            },
+            {
+              "key": "Position|rich_text",
+              "richText": true,
+              "text": {
+                "text": [
+                  {
+                    "text": "={{ $json.output.Position }}",
+                    "annotationUi": {}
+                  }
+                ]
+              }
+            },
+            {
+              "key": "Status|rich_text",
+              "textContent": "={{ $json.output.Status }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        176
+      ],
+      "id": "8c8f42b9-a00b-43ce-99ba-3e3f6bcce064",
+      "name": "Create a database page1",
+      "credentials": {
+        "notionApi": {
+          "id": "4P8u6ZJnQfOXNTni",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "tamaraghosn01@gmail.com",
+          "mode": "list",
+          "cachedResultName": "tamaraghosn01@gmail.com"
+        },
+        "start": "={{ $json.property_date.start }}",
+        "end": "=",
+        "useDefaultReminders": "={{ true }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        176
+      ],
+      "id": "603ed92b-bcd9-4f8e-83ba-fb9684f851e4",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "lb8vQxhSpX7Zrkqa",
+          "name": "Google Calendar account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Gmail Trigger": [
+      {
+        "json": {
+          "id": "198ae6b109263958",
+          "threadId": "1987f68a45ecb795",
+          "snippet": "Dear Tamara , Thank you for applying for the Web Developer &amp; Marketing Automation Expert position! We are thrilled to receive your application and are excited to learn more about you. Our team will",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 18758,
+          "historyId": "613179",
+          "internalDate": "1755272908000",
+          "labels": [
+            {
+              "id": "SENT",
+              "name": "SENT"
+            },
+            {
+              "id": "INBOX",
+              "name": "INBOX"
+            },
+            {
+              "id": "IMPORTANT",
+              "name": "IMPORTANT"
+            },
+            {
+              "id": "UNREAD",
+              "name": "UNREAD"
+            }
+          ],
+          "Subject": "Thank You for Applying to DAWRATI!",
+          "From": "Tamara Ghosn <tamaraghosn01@gmail.com>",
+          "To": "Tamara Ghosn <tamaraghosn01@gmail.com>"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Add label to message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add label to message2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add label to message3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add label to message5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add label to message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    "Add label to message1": {
+      "main": [
+        [
+          {
+            "node": "Get a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add label to message2": {
+      "main": [
+        []
+      ]
+    },
+    "Add label to message": {
+      "main": [
+        [
+          {
+            "node": "Get a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a message": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Create a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a database page": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add label to message5": {
+      "main": [
+        [
+          {
+            "node": "Get a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a message1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a message2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Create a database page1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a database page1": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e078971a-63be-4d7c-a01a-6a52219054cf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cf9581b0a1343365f614efd05b8c3312beb8d8a5b89a671eb7cfd45ba618ee5b"
+  },
+  "id": "jdOqrSEKHA3P7WoL",
+  "tags": []
+}
